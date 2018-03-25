@@ -1,6 +1,10 @@
 // add check if quat needs normalisation (some tolerance around 1)
 
+const bool IN_DEGREES = false;
+const bool IN_RADIANS = true;
+
 class Quaternion;
+class Euler;
 
 class Vector {
   public:
@@ -23,6 +27,7 @@ class Quaternion {
     Quaternion(const Vector& v);
     Quaternion(float angle, const Vector& v);
     Quaternion(const float scalar, const float i, const float j, const float k);
+    Quaternion(const Euler& e);
     Quaternion operator+(const Quaternion& q2);
     Quaternion operator-(const Quaternion& q2);
     Quaternion operator-();
@@ -48,7 +53,7 @@ class Euler {
     float pitch;
     float yaw;
     Euler();
-    Euler(float rollIn, float pitchIn, float yawIn);
+    Euler(float rollIn, float pitchIn, float yawIn, bool inRadians = true);
     Euler(const Quaternion& q);
 };
 

@@ -37,6 +37,23 @@ Quaternion::Quaternion(const float scalar, const float i, const float j, const f
   d = k;
 }
 
+// taken from here: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+// or here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
+Quaternion::Quaternion(const Euler& e) {
+  float cy = cos(e.yaw * 0.5);
+  float sy = sin(e.yaw * 0.5);
+  float cr = cos(e.roll * 0.5);
+  float sr = sin(e.roll * 0.5);
+  float cp = cos(e.pitch * 0.5);
+  float sp = sin(e.pitch * 0.5);
+
+  a = cy * cr * cp + sy * sr * sp;
+  b = cy * sr * cp - sy * cr * sp;
+  c = cy * cr * sp + sy * sr * cp;
+  d = sy * cr * cp - cy * sr * sp;
+}
+
+
 Quaternion Quaternion::operator+(const Quaternion& q2) {
   return Quaternion(a + q2.a , b + q2.b, c + q2.c, d + q2.d);
 
@@ -139,7 +156,7 @@ Vector::Vector(const Quaternion& q) {
 
 Vector Vector::rotate(Quaternion& q) {
   Quaternion vectorAsQuat(*this);
-  Quaternion qResult = q*vectorAsQuat*q.conjugate();
+  Quaternion qResult = q * vectorAsQuat * q.conjugate();
   return Vector(qResult);
 }
 
@@ -150,15 +167,23 @@ Euler::Euler() {
   yaw = 0;
 }
 
-Euler::Euler(float rollIn, float pitchIn, float yawIn) {
-  roll = rollIn;
-  pitch = pitchIn;
-  yaw = yawIn;
+Euler::Euler(float rollIn, float pitchIn, float yawIn, bool inRadians) {
+  if (inRadians) {
+    roll = rollIn;
+    pitch = pitchIn;
+    yaw = yawIn;
+  }
+  else {
+    roll = rollIn / (180/M_PI);
+    pitch = pitchIn / (180/M_PI);
+    yaw = yawIn / (180/M_PI);
+  }
 }
 
+// from here: http://www.chrobotics.com/library/understanding-quaternions
 Euler::Euler(const Quaternion& q) {
   roll = atan2(2 * (q.a * q.b + q.c * q.d) , (q.a * q.a - q.b * q.b - q.c * q.c + q.d * q.d));
-  pitch = asin(2 * (q.b * q.d - q.a * q.c));
+  pitch = -asin(2 * (q.b * q.d - q.a * q.c));
   yaw = atan2(2 * (q.a * q.d + q.b * q.c) , (q.a * q.a + q.b * q.b - q.c * q.c - q.d * q.d));
 }
 
