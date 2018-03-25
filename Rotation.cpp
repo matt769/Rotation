@@ -2,7 +2,7 @@
 #include "Math.h"
 
 Quaternion::Quaternion() {
-  a = 0.0f;
+  a = 1.0f;
   b = 0.0f;
   c = 0.0f;
   d = 0.0f;
