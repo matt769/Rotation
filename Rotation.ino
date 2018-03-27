@@ -81,10 +81,10 @@ void test() {
   Serial.print(angleBetween(q6, q7), 3); Serial.print('\n');
   Quaternion q8(0.7854, v1);
   Quaternion q9(1.5708, v2);
-  Serial.print(angleBetween(q8, q9), 3); Serial.print('\n');  
-  Quaternion q10(1,0,0,0);
+  Serial.print(angleBetween(q8, q9), 3); Serial.print('\n');
+  Quaternion q10(1, 0, 0, 0);
   Quaternion q11(1.5708, v1);
-  Serial.print(angleBetween(q10, q11), 3); Serial.print('\n');  
+  Serial.print(angleBetween(q10, q11), 3); Serial.print('\n');
 
   // SLERP
   Quaternion slerpResult;
@@ -94,6 +94,13 @@ void test() {
   printQuat(slerpResult);
   slerpResult = slerp(q10, q11, 0.666);
   printQuat(slerpResult);
+
+  slerpResult = slerp(q8, q9, 0.333);
+  printQuat(slerpResult);
+  Serial.print(slerpResult.getRoll()); Serial.print('\t');
+  Serial.print(slerpResult.getPitch()); Serial.print('\t');
+  Serial.print(slerpResult.getYaw()); Serial.print('\n');
+
 }
 
 // print operations

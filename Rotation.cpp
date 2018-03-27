@@ -54,20 +54,20 @@ Quaternion::Quaternion(const Euler& e) {
 }
 
 
-Quaternion Quaternion::operator+(const Quaternion& q2) {
+Quaternion Quaternion::operator+(const Quaternion& q2) const {
   return Quaternion(a + q2.a , b + q2.b, c + q2.c, d + q2.d);
 
 }
 
-Quaternion Quaternion::operator-(const Quaternion& q2) {
+Quaternion Quaternion::operator-(const Quaternion& q2) const {
   return Quaternion(a - q2.a , b - q2.b, c - q2.c, d - q2.d);
 }
 
-Quaternion Quaternion::operator-() {
+Quaternion Quaternion::operator-() const {
   return Quaternion(-a, -b, -c, -d);
 }
 
-Quaternion Quaternion::operator*(const Quaternion& q2) {
+Quaternion Quaternion::operator*(const Quaternion& q2) const {
   Quaternion result;
   result.a = a * q2.a - b * q2.b - c * q2.c - d * q2.d;
   result.b = a * q2.b + b * q2.a + c * q2.d - d * q2.c;
@@ -77,7 +77,7 @@ Quaternion Quaternion::operator*(const Quaternion& q2) {
 
 }
 
-Quaternion Quaternion::conjugate() {
+Quaternion Quaternion::conjugate() const {
   return Quaternion(a, -b, -c, -d);
 }
 
@@ -102,52 +102,38 @@ Quaternion Quaternion::operator/(const float scalar) const {
   return result;
 }
 
-float Quaternion::norm() {
+float Quaternion::norm() const {
   return sqrt(a * a + b * b + c * c + d * d);
 }
 
-Quaternion Quaternion::normalise() {
+Quaternion Quaternion::normalise() const {
   return Quaternion(*this / norm());
 }
 
-//float angleBetween(const Quaternion left, const Quaternion right){
-//  return acos(dotproduct(left,right);
-//  // not numerically stable?
-//}
-
 // assumes Euler rotation order of yaw, pitch, roll
-float Quaternion::getRoll() {
+float Quaternion::getRoll() const {
   return atan2(2 * (a * b + c * d), a * a - b * b - c * c + d * d);
 }
 
-float Quaternion::getPitch() {
+float Quaternion::getPitch() const {
   return -asin(2 * (b * d - a * c));
 }
 
-float Quaternion::getYaw() {
+float Quaternion::getYaw() const {
   return atan2(2 * (a * d + b * c), a * a + b * b - c * c - d * d);
 }
 
-
-
-// change to member function
-//float dotProduct(const Quaternion left, const Quaternion right) {
-//  float dot = left.a * right.a + left.b * right.b + left.c * right.c + left.d * right.d;
-//  return dot;
-//}
-
-float Quaternion::dotProduct(const Quaternion q2) {
+float Quaternion::dotProduct(const Quaternion q2) const {
   return a * q2.a + b * q2.b + c * q2.c + d * q2.d;
 }
 
 // assumes that both quaternions are unit quaterions i.e. norm = 1
-float Quaternion::angleBetween(const Quaternion& q2) {
+float Quaternion::angleBetween(const Quaternion& q2) const {
   //  return 2 * acos((this->dotProduct(q2)) / (this->norm() * q2.norm()));
   return 2 * acos(this->dotProduct(q2));
 }
 
-Quaternion Quaternion::slerp(const Quaternion& q2, float ratio){
-//  Quaternion q1Temp = *this;
+Quaternion Quaternion::slerp(const Quaternion& q2, float ratio) const {
   float theta = 0.5 * this->angleBetween(q2);
   Quaternion q1Temp = *this * sin((1 - ratio) * theta);
   Quaternion q2Temp = q2 * sin(ratio * theta);

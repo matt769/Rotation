@@ -28,24 +28,24 @@ class Quaternion {
     Quaternion(float angle, const Vector& v);
     Quaternion(const float scalar, const float i, const float j, const float k);
     Quaternion(const Euler& e);
-    Quaternion operator+(const Quaternion& q2);
-    Quaternion operator-(const Quaternion& q2);
-    Quaternion operator-();
-    Quaternion operator*(const Quaternion& q2);
+    Quaternion operator+(const Quaternion& q2) const;
+    Quaternion operator-(const Quaternion& q2) const;
+    Quaternion operator-() const;
+    Quaternion operator*(const Quaternion& q2) const;
     Quaternion operator*(const float scalar) const;
     Quaternion operator+(const float scalar) const;
     Quaternion operator-(const float scalar) const;
     Quaternion operator/(const float scalar) const;
-    float dotProduct(const Quaternion q2);
-    float norm();
-    Quaternion normalise();
-    Quaternion conjugate();
-    float angleBetween(const Quaternion& q2);
-    Quaternion slerp(const Quaternion& q2, float ratio);
+    float dotProduct(const Quaternion q2) const;
+    float norm() const;
+    Quaternion normalise() const;
+    Quaternion conjugate() const;
+    float angleBetween(const Quaternion& q2) const;
+    Quaternion slerp(const Quaternion& q2, float ratio) const;
     //    void print();
-    float getRoll();
-    float getPitch();
-    float getYaw();
+    float getRoll() const;
+    float getPitch() const;
+    float getYaw() const;
 };
 
 // rotation order is yaw then pitch then roll
