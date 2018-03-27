@@ -146,18 +146,13 @@ float Quaternion::angleBetween(const Quaternion& q2) {
   return 2 * acos(this->dotProduct(q2));
 }
 
-//Quaternion Quaternion::slerp(const Quaternion& q2, float ratio){
+Quaternion Quaternion::slerp(const Quaternion& q2, float ratio){
 //  Quaternion q1Temp = *this;
-//  float theta = 0.5 * q1Temp.angleBetween(q2);
-//  q1Temp = q1Temp * sin((1 - ratio) * theta);
-//  Quaternion q2Temp = q2 * sin(ratio * theta);
-//  return (q1Temp + q2Temp ) / sin(theta);
-//}
-
-// NON_MEMBER VERSIONS
-
-
-
+  float theta = 0.5 * this->angleBetween(q2);
+  Quaternion q1Temp = *this * sin((1 - ratio) * theta);
+  Quaternion q2Temp = q2 * sin(ratio * theta);
+  return (q1Temp + q2Temp ) / sin(theta);
+}
 
 
 Vector::Vector(float xin, float yin, float zin) {
@@ -214,7 +209,6 @@ float angleBetween(const Quaternion& q1, const Quaternion& q2) {
   return 2 * acos(dotProduct(q1,q2));
 }
 
-// REQUIRES TESTING
 Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio){
   float theta = 0.5 * angleBetween(q1,q2);
   Quaternion q1Temp = q1 * sin((1 - ratio) * theta);
