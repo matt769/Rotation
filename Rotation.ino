@@ -1,3 +1,6 @@
+// make all rotation objects and their methods const?
+// need to test slerp
+
 #include "Rotation.h"
 
 void setup() {
@@ -53,7 +56,7 @@ void test() {
   result = q1.normalise();
   printQuat(result);
   result = q2.conjugate();
-  printQuat(result);  
+  printQuat(result);
 
   // scalar operations
   result = q2 + 2.5; // addition
@@ -71,6 +74,26 @@ void test() {
   Serial.print(vResult.x, 3); Serial.print('\t');
   Serial.print(vResult.y, 3); Serial.print('\t');
   Serial.print(vResult.z, 3); Serial.print('\n');
+
+  // angle between quaternions
+  Quaternion q6(0.7854, v0);
+  Quaternion q7(1.5708, v0);
+  Serial.print(angleBetween(q6, q7), 3); Serial.print('\n');
+  Quaternion q8(0.7854, v1);
+  Quaternion q9(1.5708, v2);
+  Serial.print(angleBetween(q8, q9), 3); Serial.print('\n');  
+  Quaternion q10(1,0,0,0);
+  Quaternion q11(1.5708, v1);
+  Serial.print(angleBetween(q10, q11), 3); Serial.print('\n');  
+
+  // SLERP
+  Quaternion slerpResult;
+  slerpResult = slerp(q10, q11, 0.333);
+  printQuat(slerpResult);
+  slerpResult = slerp(q10, q11, 0.5);
+  printQuat(slerpResult);
+  slerpResult = slerp(q10, q11, 0.666);
+  printQuat(slerpResult);
 }
 
 // print operations
@@ -92,3 +115,5 @@ void printEulerDegrees(Euler e) {
   Serial.print(e.pitch * 180 / M_PI, 3); Serial.print('\t');
   Serial.print(e.yaw * 180 / M_PI, 3); Serial.print('\n');
 }
+
+

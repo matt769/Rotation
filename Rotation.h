@@ -32,14 +32,16 @@ class Quaternion {
     Quaternion operator-(const Quaternion& q2);
     Quaternion operator-();
     Quaternion operator*(const Quaternion& q2);
-    Quaternion operator*(const float r);
-    Quaternion operator+(const float r);
-    Quaternion operator-(const float r);
-    Quaternion operator/(const float scalar);
+    Quaternion operator*(const float scalar) const;
+    Quaternion operator+(const float scalar) const;
+    Quaternion operator-(const float scalar) const;
+    Quaternion operator/(const float scalar) const;
     float dotProduct(const Quaternion q2);
     float norm();
     Quaternion normalise();
     Quaternion conjugate();
+    float angleBetween(const Quaternion& q2);
+    Quaternion slerp(const Quaternion& q2, float ratio);
     //    void print();
     float getRoll();
     float getPitch();
@@ -57,3 +59,7 @@ class Euler {
     Euler(const Quaternion& q);
 };
 
+
+float dotProduct(const Quaternion& q1, const Quaternion q2);
+float angleBetween(const Quaternion& q1, const Quaternion& q2);
+Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio);

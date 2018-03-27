@@ -81,19 +81,19 @@ Quaternion Quaternion::conjugate() {
   return Quaternion(a, -b, -c, -d);
 }
 
-Quaternion Quaternion::operator+(const float r) {
-  return Quaternion(a + r, b, c, d);
+Quaternion Quaternion::operator+(const float scalar) const {
+  return Quaternion(a + scalar, b, c, d);
 }
 
-Quaternion Quaternion::operator-(const float r) {
-  return Quaternion(a - r, b, c, d);
+Quaternion Quaternion::operator-(const float scalar) const {
+  return Quaternion(a - scalar, b, c, d);
 }
 
-Quaternion Quaternion::operator*(const float r) {
-  return Quaternion(a * r, b * r, c * r, d * r);
+Quaternion Quaternion::operator*(const float scalar) const {
+  return Quaternion(a * scalar, b * scalar, c * scalar, d * scalar);
 }
 
-Quaternion Quaternion::operator/(const float scalar) {
+Quaternion Quaternion::operator/(const float scalar) const {
   Quaternion result;
   result.a = a / scalar;
   result.b = b / scalar;
@@ -130,16 +130,34 @@ float Quaternion::getYaw() {
 
 
 
-// change to member functino
+// change to member function
 //float dotProduct(const Quaternion left, const Quaternion right) {
 //  float dot = left.a * right.a + left.b * right.b + left.c * right.c + left.d * right.d;
 //  return dot;
 //}
 
 float Quaternion::dotProduct(const Quaternion q2) {
-  float dot = a * q2.a + b * q2.b + c * q2.c + d * q2.d;
-  return dot;
+  return a * q2.a + b * q2.b + c * q2.c + d * q2.d;
 }
+
+// assumes that both quaternions are unit quaterions i.e. norm = 1
+float Quaternion::angleBetween(const Quaternion& q2) {
+  //  return 2 * acos((this->dotProduct(q2)) / (this->norm() * q2.norm()));
+  return 2 * acos(this->dotProduct(q2));
+}
+
+//Quaternion Quaternion::slerp(const Quaternion& q2, float ratio){
+//  Quaternion q1Temp = *this;
+//  float theta = 0.5 * q1Temp.angleBetween(q2);
+//  q1Temp = q1Temp * sin((1 - ratio) * theta);
+//  Quaternion q2Temp = q2 * sin(ratio * theta);
+//  return (q1Temp + q2Temp ) / sin(theta);
+//}
+
+// NON_MEMBER VERSIONS
+
+
+
 
 
 Vector::Vector(float xin, float yin, float zin) {
@@ -174,9 +192,9 @@ Euler::Euler(float rollIn, float pitchIn, float yawIn, bool inRadians) {
     yaw = yawIn;
   }
   else {
-    roll = rollIn / (180/M_PI);
-    pitch = pitchIn / (180/M_PI);
-    yaw = yawIn / (180/M_PI);
+    roll = rollIn / (180 / M_PI);
+    pitch = pitchIn / (180 / M_PI);
+    yaw = yawIn / (180 / M_PI);
   }
 }
 
@@ -187,3 +205,19 @@ Euler::Euler(const Quaternion& q) {
   yaw = atan2(2 * (q.a * q.d + q.b * q.c) , (q.a * q.a + q.b * q.b - q.c * q.c - q.d * q.d));
 }
 
+
+float dotProduct(const Quaternion& q1, const Quaternion q2) {
+  return q1.a * q2.a + q1.b * q2.b + q1.c * q2.c + q1.d * q2.d;
+}
+
+float angleBetween(const Quaternion& q1, const Quaternion& q2) {
+  return 2 * acos(dotProduct(q1,q2));
+}
+
+// REQUIRES TESTING
+Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio){
+  float theta = 0.5 * angleBetween(q1,q2);
+  Quaternion q1Temp = q1 * sin((1 - ratio) * theta);
+  Quaternion q2Temp = q2 * sin(ratio * theta);
+  return (q1Temp + q2Temp ) / sin(theta);
+}
