@@ -1,5 +1,3 @@
-// add check if quat needs normalisation (some tolerance around 1)
-
 const bool IN_DEGREES = false;
 const bool IN_RADIANS = true;
 
@@ -57,6 +55,7 @@ class Euler {
     Euler();
     Euler(float rollIn, float pitchIn, float yawIn, bool inRadians = true);
     Euler(const Quaternion& q);
+    Euler(const Euler& e);
 };
 
 

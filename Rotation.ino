@@ -8,13 +8,11 @@ void setup() {
   delay(4000);
 
   test();
-
 }
 
 void loop() {}
 
 void test() {
-
   // initialise some Euler angles
   Euler e0(0.97738, 1.8675, -0.50615);
   printEulerDegrees(e0);

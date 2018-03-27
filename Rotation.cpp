@@ -56,7 +56,6 @@ Quaternion::Quaternion(const Euler& e) {
 
 Quaternion Quaternion::operator+(const Quaternion& q2) const {
   return Quaternion(a + q2.a , b + q2.b, c + q2.c, d + q2.d);
-
 }
 
 Quaternion Quaternion::operator-(const Quaternion& q2) const {
@@ -74,7 +73,6 @@ Quaternion Quaternion::operator*(const Quaternion& q2) const {
   result.c = a * q2.c - b * q2.d + c * q2.a + d * q2.b;
   result.d = a * q2.d + b * q2.c - c * q2.b + d * q2.a;
   return result;
-
 }
 
 Quaternion Quaternion::conjugate() const {
@@ -140,7 +138,6 @@ Quaternion Quaternion::slerp(const Quaternion& q2, float ratio) const {
   return (q1Temp + q2Temp ) / sin(theta);
 }
 
-
 Vector::Vector(float xin, float yin, float zin) {
   x = xin;
   y = yin;
@@ -186,7 +183,14 @@ Euler::Euler(const Quaternion& q) {
   yaw = atan2(2 * (q.a * q.d + q.b * q.c) , (q.a * q.a + q.b * q.b - q.c * q.c - q.d * q.d));
 }
 
+Euler::Euler(const Euler& e){
+  roll = e.roll;
+  pitch = e.pitch;
+  yaw = e.yaw;
+}
 
+
+// NON-MEMBER VERSION OF SOME FUNCTIONS
 float dotProduct(const Quaternion& q1, const Quaternion q2) {
   return q1.a * q2.a + q1.b * q2.b + q1.c * q2.c + q1.d * q2.d;
 }
