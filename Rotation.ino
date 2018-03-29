@@ -98,7 +98,6 @@ void test() {
   Serial.print(slerpResult.getRoll()); Serial.print('\t');
   Serial.print(slerpResult.getPitch()); Serial.print('\t');
   Serial.print(slerpResult.getYaw()); Serial.print('\n');
-
 }
 
 // print operations

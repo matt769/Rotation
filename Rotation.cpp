@@ -132,9 +132,16 @@ float Quaternion::angleBetween(const Quaternion& q2) const {
 }
 
 Quaternion Quaternion::slerp(const Quaternion& q2, float ratio) const {
-  float theta = 0.5 * this->angleBetween(q2);
-  Quaternion q1Temp = *this * sin((1 - ratio) * theta);
-  Quaternion q2Temp = q2 * sin(ratio * theta);
+  float dotP = dotProduct(q2);
+  float theta = 0.5 * 2 * acos(dotP);
+  Quaternion q1Temp = (*this) * sin((1 - ratio) * theta);
+  Quaternion q2Temp;
+  if (dotP < 0) {
+    q2Temp = -q2 * sin(ratio * theta);
+  }
+  else {
+    q2Temp = q2 * sin(ratio * theta);
+  }
   return (q1Temp + q2Temp ) / sin(theta);
 }
 
@@ -183,7 +190,7 @@ Euler::Euler(const Quaternion& q) {
   yaw = atan2(2 * (q.a * q.d + q.b * q.c) , (q.a * q.a + q.b * q.b - q.c * q.c - q.d * q.d));
 }
 
-Euler::Euler(const Euler& e){
+Euler::Euler(const Euler& e) {
   roll = e.roll;
   pitch = e.pitch;
   yaw = e.yaw;
@@ -196,12 +203,20 @@ float dotProduct(const Quaternion& q1, const Quaternion q2) {
 }
 
 float angleBetween(const Quaternion& q1, const Quaternion& q2) {
-  return 2 * acos(dotProduct(q1,q2));
+  return 2 * acos(dotProduct(q1, q2));
 }
 
-Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio){
-  float theta = 0.5 * angleBetween(q1,q2);
+Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio) {
+  // not using angleBetween directly because want to check result of dotProduct
+  float dotP = dotProduct(q1, q2);
+  float theta = 0.5 * 2 * acos(dotP);
   Quaternion q1Temp = q1 * sin((1 - ratio) * theta);
-  Quaternion q2Temp = q2 * sin(ratio * theta);
+  Quaternion q2Temp;
+  if (dotP < 0) {
+    q2Temp = -q2 * sin(ratio * theta);
+  }
+  else {
+    q2Temp = q2 * sin(ratio * theta);
+  }
   return (q1Temp + q2Temp ) / sin(theta);
 }
