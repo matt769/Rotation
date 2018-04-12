@@ -1,3 +1,6 @@
+#ifndef ROTATION_H
+#define ROTATION_H
+
 const bool IN_DEGREES = false;
 const bool IN_RADIANS = true;
 
@@ -62,3 +65,5 @@ class Euler {
 float dotProduct(const Quaternion& q1, const Quaternion q2);
 float angleBetween(const Quaternion& q1, const Quaternion& q2);
 Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float ratio);
+
+#endif
